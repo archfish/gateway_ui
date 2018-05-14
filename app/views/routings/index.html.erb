@@ -1,0 +1,31 @@
+<table border="2">
+<tr>
+  <th>id</th>
+  <th>名字</th>
+  <th>路由策略</th>
+  <th>路由比例(%)</th>
+  <th>状态</th>
+  <th>API编号</th>
+  <th>动作</th>
+</tr>
+  <% @routings.each do |routing| %>
+    <tr>
+      <td><%= routing.id %></td>
+      <td><%= routing.name %></td>
+      <td><%=t routing.strategy_name, scope: 'enum.strategy' %></td>
+      <td><%= routing.traffic_rate %></td>
+      <td><%= routing.status_name %></td>
+      <td><%= routing.api %></td>
+      <td>
+        <%= link_to '编辑', edit_routing_path(routing.id) %>
+        <%= link_to '删除', routing_path(routing.id), method: :delete %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to '新建路由', new_routing_path %>
+
+<% last_id = @routings.max{|x| x.id}.try(:id).to_i %>
+<%= link_to '第一页', routings_path(after: 0, per_page: @per_page || 10) %>
+<%= link_to_if last_id, '下一页', routings_path(after: last_id, per_page: @per_page || 10) %>

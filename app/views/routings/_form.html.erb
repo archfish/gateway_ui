@@ -1,0 +1,15 @@
+<%= form_tag(target, method: method) do |f| %>
+  <%= label_tag :name %>
+  <%= text_field_tag :name, @routing.name %></br>
+  <%= label_tag :strategy %>
+  <%= select_tag :strategy, options_for_select(Routing::Strategy, @routing.strategy) %></br>
+  <%= label_tag :traffic_rate %>
+  <%= number_field_tag :traffic_rate, @routing.traffic_rate %></br>
+  <%= label_tag :status %>
+  <%= select_tag :status, options_for_select(Routing::Status, @routing.status) %></br>
+  <%= label_tag :cluster_id %>
+  <%= number_field_tag :cluster_id, @routing.cluster_id %></br>
+  <%= label_tag :api %>
+  <%= number_field_tag :api, @routing.api %></br>
+  <%= submit_tag '提交' %>
+<% end %>

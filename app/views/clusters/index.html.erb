@@ -1,0 +1,25 @@
+<table border="2">
+<tr>
+  <th>id</th>
+  <th>名字</th>
+  <th>负载均衡</th>
+  <th>动作</th>
+</tr>
+  <% @clusters.each do |cluster| %>
+    <tr>
+      <td><%= cluster.id %></td>
+      <td><%= cluster.name %></td>
+      <td><%=t cluster.lb, scope: 'enum.lb' %></td>
+      <td>
+        <%= link_to '编辑', edit_cluster_path(cluster.id) %>
+        <%= link_to '删除', cluster_path(cluster.id), method: :delete %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to '新建集群', new_cluster_path %>
+
+<% last_id = @clusters.max{|x| x.id}.try(:id).to_i %>
+<%= link_to '第一页', clusters_path(after: 0, per_page: @per_page || 10) %>
+<%= link_to_if last_id, '下一页', clusters_path(after: last_id, per_page: @per_page || 10) %>

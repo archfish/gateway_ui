@@ -1,0 +1,54 @@
+<table border="2">
+<tr>
+  <th rowspan="2">id</th>
+  <th rowspan="2">真实服务</th>
+  <th rowspan="2">通讯协议</th>
+  <th rowspan="2">最大QPS</th>
+  <th colspan="4">健康检查</th>
+  <th colspan="5">熔断</th>
+  <th rowspan="2">操作</th>
+</tr>
+<tr>
+  <th>请求路径</th>
+  <th>响应内容</th>
+  <th>检查间隔</th>
+  <th>超时</th>
+  <% '以下为熔断配置' %>
+  <th>关闭延时</th>
+  <th>半开比例(%)</th>
+  <th>统计周期</th>
+  <th>失效比例(%)则半开变关闭</th>
+  <th>成功比例(%)则半开变开启</th>
+</tr>
+<% @servers.each do |server| %>
+  <tr>
+  <td><%= server.id %></td>
+  <td><%= server.addr %></td>
+  <td><%= server.protocol_name %></td>
+  <td><%= server.max_qps %></td>
+
+  <% hc = server.heath_check %>
+  <td><%= hc.path %></td>
+  <td><%= hc.body %></td>
+  <td><%= hc.check_interval %></td>
+  <td><%= hc.timeout %></td>
+
+  <% cb = server.circuit_breaker %>
+  <td><%= cb.close_timeout %></td>
+  <td><%= cb.half_traffic_rate %></td>
+  <td><%= cb.rate_check_period %></td>
+  <td><%= cb.failure_rate_to_close %></td>
+  <td><%= cb.succeed_rate_to_open %></td>
+
+  <td>
+    <%= link_to '编辑', edit_server_path(server.id) %>
+    <%= link_to '删除', server_path(server.id), method: :delete %>
+  </td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to '新建服务', new_server_path %>
+<% last_id = @servers.max{|x| x.id}.try(:id).to_i %>
+<%= link_to '第一页', servers_path(after: 0, per_page: @per_page || 10) %>
+<%= link_to_if last_id, '下一页', servers_path(after: last_id, per_page: @per_page || 10) %>

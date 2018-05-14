@@ -1,0 +1,8 @@
+zh-CN:
+  enum:
+    lb:
+      RoundRobin: '轮询'
+      IPHash: 'IP地址散列'
+    strategy:
+      Copy: '复制'
+      Split: '分流'

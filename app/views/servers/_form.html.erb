@@ -1,0 +1,28 @@
+<%= form_tag(target, method: method) do |f| %>
+  <%= label_tag :addr %>
+  <%= text_field_tag :addr, @server.addr %></br>
+  <%= label_tag :protocol %>
+  <%= select_tag :protocol, options_for_select(Cluster::Protocol, @server.protocol) %></br>
+  <%= label_tag :max_qps %>
+  <%= number_field_tag :max_qps, @server.max_qps %></br>
+  <%= label_tag :'heath_check[path]' %>
+  <%= text_field_tag :'heath_check[path]', @server.heath_check.path %></br>
+  <%= label_tag :'heath_check[body]' %>
+  <%= text_field_tag :'heath_check[body]', @server.heath_check.body %></br>
+  <%= label_tag :'heath_check[check_interval]' %>
+  <%= number_field_tag :'heath_check[check_interval]', @server.heath_check.check_interval %></br>
+  <%= label_tag :'heath_check[timeout]' %>
+  <%= number_field_tag :'heath_check[timeout]', @server.heath_check.timeout %></br>
+
+  <%= label_tag :'circuit_breaker[close_timeout]' %>
+  <%= number_field_tag :'circuit_breaker[close_timeout]', @server.circuit_breaker.close_timeout %></br>
+  <%= label_tag :'circuit_breaker[half_traffic_rate]' %>
+  <%= number_field_tag :'circuit_breaker[half_traffic_rate]', @server.circuit_breaker.half_traffic_rate %></br>
+  <%= label_tag :'circuit_breaker[rate_check_period]' %>
+  <%= number_field_tag :'circuit_breaker[rate_check_period]', @server.circuit_breaker.rate_check_period %></br>
+  <%= label_tag :'circuit_breaker[failure_rate_to_close]' %>
+  <%= number_field_tag :'circuit_breaker[failure_rate_to_close]', @server.circuit_breaker.failure_rate_to_close %></br>
+  <%= label_tag :'circuit_breaker[succeed_rate_to_open]' %>
+  <%= number_field_tag :'circuit_breaker[succeed_rate_to_open]', @server.circuit_breaker.succeed_rate_to_open %></br>
+  <%= submit_tag '提交' %>
+<% end %>
