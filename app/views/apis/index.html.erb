@@ -23,11 +23,11 @@
       <td><%= api.domain %></td>
       <td><%= api.status_name %></td>
       <td><%= api.ip_access_control %></td>
-      <td><%= JSON.pretty_generate api.default_value.as_json %></td>
-      <td><%= JSON.pretty_generate api.nodes.as_json %></td>
+      <td><%= api.default_value.as_json %></td>
+      <td><%= api.nodes.as_json %></td>
       <td><%= api.auth_filter %></td>
       <td><%= api.perms %></td>
-      <td><%= api.render_template %></td>
+      <td><%= api.render_template.as_json %></td>
       <td>
         <%= link_to '编辑', edit_api_path(api.id) %>
         <%= link_to '删除', api_path(api.id), method: :delete %>
@@ -36,7 +36,7 @@
   <% end %>
 </table>
 
-<%= link_to '新建集群', new_api_path %>
+<%= link_to '新建API', new_api_path %>
 
 <% last_id = @apis.max{|x| x.id}.try(:id).to_i %>
 <%= link_to '第一页', apis_path(after: 0, per_page: @per_page || 10) %>

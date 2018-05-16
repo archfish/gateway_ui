@@ -50,6 +50,15 @@ class Routing
     key_of_status(self.status)
   end
 
+  def update(options = {})
+    options.each_pair do |k, v|
+      public_send("#{k}=", v) if respond_to?("#{k}=")
+    end
+    result = HttpRequest.put('/routings', self.as_json)
+
+    result.ok?
+  end
+
   class << self
     def all(options)
       result = HttpRequest.get('/routings', options)

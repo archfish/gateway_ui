@@ -34,6 +34,11 @@ class Node
     @cache = v.is_a?(Cache) ? v : Cache.new(v)
   end
 
+  def validations=(v)
+    return if v.nil?
+    @validations = v.map{ |x| x.is_a?(Validation) ? x : Validation.new(x) }
+  end
+
   class Cache
     attr_accessor :keys, :deadline, :conditions
 
@@ -41,6 +46,47 @@ class Node
       self.keys = args[:keys]
       self.deadline = args[:deadline]
       self.conditions = args[:conditions]
+    end
+  end
+
+  class Validation
+    attr_accessor :parameter, :required, :rules
+
+    def initialize(args = {})
+      self.parameter = args[:parameter]
+      self.required = args[:required]
+      self.rules = args[:rules]
+    end
+
+    def parameter=(v)
+      return if v.nil?
+
+      @parameter = v.is_a?(Parameter) ? v : Parameter.new(v)
+    end
+
+    def rules=(v)
+      return if v.nil?
+
+      @rules = v.map{ |x| x.is_a?(ValidationRule) ? x : ValidationRule.new(x) }
+    end
+  end
+
+  class Parameter
+    attr_accessor :name, :source, :index
+
+    def initialize(args = {})
+      self.name = args[:name]
+      self.source = args[:source]
+      self.index = args[:index]
+    end
+  end
+
+  class ValidationRule
+    attr_accessor :rule_type, :expression
+
+    def initialize(args= {})
+      self.rule_type = args[:rule_type]
+      self.expression = args[:expression]
     end
   end
 end

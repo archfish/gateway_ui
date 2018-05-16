@@ -29,7 +29,7 @@ class Api
   end
 
   def default_value=(v)
-    @default_value = DefaultValue.new(v)
+    @default_value = v.is_a?(DefaultValue) ? v : DefaultValue.new(v)
   end
 
   def nodes=(v)
@@ -40,6 +40,29 @@ class Api
   def render_template=(v)
     return if v.nil?
     @render_template = RenderTemplate.new(v)
+  end
+
+  def ip_access_control=(v)
+    return if v.nil?
+    @ip_access_control = v.is_a?(IpAccessControl) ? v : IpAccessControl.new(v)
+  end
+
+  def perms=(v)
+    return if v.nil?
+    @perms = v.is_a?(String) ? v.split(',').map(&:strip) : v
+  end
+
+  def use_default=(v)
+    @use_default = v.is_a?(String) ? v.casecmp('true').zero? : v
+  end
+
+  def update(options = {})
+    options.each_pair do |k, v|
+      public_send("#{k}=", v) if respond_to?("#{k}=")
+    end
+    result = HttpRequest.put('/apis', self.as_json)
+
+    result.ok?
   end
 
   class << self

@@ -1,5 +1,7 @@
 <%= form_tag(target, method: method) do |f| %>
+  <%= label_tag :name %>
   <%= text_field_tag :name, @cluster.name %>
+  <%= label_tag :load_balance %>
   <%= select_tag :load_balance, options_for_select(Cluster::LoadBalance, @cluster.load_balance) %>
   <%= submit_tag '提交' %>
 <% end %>

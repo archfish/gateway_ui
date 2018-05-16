@@ -1,14 +1,14 @@
 class RenderTemplate
-  attr_accessor :object
+  attr_accessor :objects
 
   def initialize(args = {})
-    self.object = args[object]
+    self.objects = args[:objects]
   end
 
-  def object=(v)
+  def objects=(v)
     return if v.nil?
 
-    @object = v.map{|x| x.is_a?(RenderObject) ? x : RenderObject.new(x) }
+    @objects = v.map{|x| x.is_a?(RenderObject) ? x : RenderObject.new(x) }
   end
 
   class RenderObject
