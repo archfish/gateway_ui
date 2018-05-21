@@ -5,7 +5,7 @@ class Api
                 :default_value, :nodes, :auth_filter, :perms, :render_template, :use_default
 
   def initialize(args = {})
-    self.id = args[:id]
+    self.id = args[:id].try(:to_i)
     self.name = args[:name]
     self.url_pattern = args[:url_pattern]
     self.method = args[:method]
@@ -20,8 +20,10 @@ class Api
     self.use_default = args[:use_default]
   end
 
-  def status=(v)
-    @status = v.try(:to_i)
+  [:id, :status].each do |x|
+    define_method "#{x}=".to_sym do |v|
+      instance_variable_set("@#{x}", v.try(:to_i))
+    end
   end
 
   def status_name

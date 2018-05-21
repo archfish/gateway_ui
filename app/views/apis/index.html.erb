@@ -6,13 +6,8 @@
   <th>请求方法</th>
   <th>请求域名</th>
   <th>状态</th>
-  <th>IP控制</th>
-  <th>默认值</th>
-  <th>子节点</th>
-  <th>鉴权插件</th>
-  <th>证书</th>
-  <th>响应模版</th>
-  <th>动作</th>
+  <th>强制使用默认值</th>
+  <th>操作</th>
 </tr>
   <% @apis.each do |api| %>
     <tr>
@@ -22,14 +17,10 @@
       <td><%= api.method %></td>
       <td><%= api.domain %></td>
       <td><%= api.status_name %></td>
-      <td><%= api.ip_access_control %></td>
-      <td><%= api.default_value.as_json %></td>
-      <td><%= api.nodes.as_json %></td>
-      <td><%= api.auth_filter %></td>
-      <td><%= api.perms %></td>
-      <td><%= api.render_template.as_json %></td>
+      <td><%= api.use_default %></td>
       <td>
         <%= link_to '编辑', edit_api_path(api.id) %>
+        <%= link_to '查看', api_path(api.id) %>
         <%= link_to '删除', api_path(api.id), method: :delete %>
       </td>
     </tr>

@@ -12,9 +12,9 @@ class ClustersController < ApplicationController
   def edit; end
 
   def update
-    res = @cluster.update(params)
+    ok = @cluster.update(params)
 
-    if res
+    if ok
       redirect_to clusters_url, notice: '更新成功'
     else
       render :edit

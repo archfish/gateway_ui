@@ -7,9 +7,14 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%# "<link rel='stylesheet' href='//cdn.bootcss.com/foundation/6.4.3/css/foundation.min.css'>" %>
+    <%# "<link rel='stylesheet' href='//cdn.bootcss.com/foundation/5.5.3/css/foundation.min.css'>" %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class='container'>
+      <%= yield %>
+    </div>
   </body>
 </html>

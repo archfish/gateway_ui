@@ -6,5 +6,5 @@ Rails.application.routes.draw do
 
   resources :routings, only: [:index, :new, :update, :create, :edit, :destroy]
 
-  resources :apis, only: [:index, :new, :update, :create, :edit, :destroy]
+  resources :apis
 end
