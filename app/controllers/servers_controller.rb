@@ -1,5 +1,5 @@
 class ServersController < ApplicationController
-  before_action :set_server, only: [:edit, :update]
+  before_action :set_server, only: [:edit, :update, :unbind]
 
   def index
     @servers = Server.all(after: after_index, limit: per_page)
@@ -33,6 +33,11 @@ class ServersController < ApplicationController
 
   def destroy
     redirect_to servers_url if Server.destroy(params.slice(:id))
+  end
+
+  def unbind
+    @server.unbind!(cluster_id: params[:cluster_id])
+    redirect_to servers_cluster_path(params[:cluster_id])
   end
 
   private

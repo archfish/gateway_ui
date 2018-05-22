@@ -1,5 +1,6 @@
 class RoutingsController < ApplicationController
   before_action :set_routing, only: [:edit, :update]
+  before_action :get_related_list, only: [:new, :edit]
 
   def index
     @routings = Routing.all(after: after_index, limit: per_page)
@@ -39,5 +40,10 @@ class RoutingsController < ApplicationController
 
   def set_routing
     @routing = Routing.find_by(params.slice(:id))
+  end
+
+  def get_related_list
+    @apis = Api.all
+    @clusters = Cluster.all
   end
 end

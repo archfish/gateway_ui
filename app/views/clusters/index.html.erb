@@ -1,22 +1,4 @@
-<table border="2">
-<tr>
-  <th>id</th>
-  <th>名字</th>
-  <th>负载均衡</th>
-  <th>动作</th>
-</tr>
-  <% @clusters.each do |cluster| %>
-    <tr>
-      <td><%= cluster.id %></td>
-      <td><%= cluster.name %></td>
-      <td><%=t cluster.lb, scope: 'enum.lb' %></td>
-      <td>
-        <%= link_to '编辑', edit_cluster_path(cluster.id) %>
-        <%= link_to '删除', cluster_path(cluster.id), method: :delete %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<%= render partial: 'list', locals: {clusters: @clusters} %>
 
 <%= link_to '新建集群', new_cluster_path %>
 

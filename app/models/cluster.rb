@@ -5,31 +5,51 @@ class Cluster
 
   def initialize(args = {})
     args ||= {}
-    @id = args[:id].to_i
-    @name = args[:name]
-    @load_balance = args[:load_balance]
+    self.id = args[:id]
+    self.name = args[:name]
+    self.load_balance = args[:load_balance]
+  end
+
+  [:id, :load_balance].each do |x|
+    define_method "#{x}=".to_sym do |v|
+      instance_variable_set("@#{x}", v.try(:to_i))
+    end
   end
 
   def lb
     key_of_lb(@load_balance)
   end
 
-  def to_api_options
-    result = {}
-    result[:id] = @id
-    result[:name] = @name if @name.present?
-    result[:load_balance] = @load_balance.to_i if @load_balance.present?
+  def update(options = {})
+    options.each_pair do |k, v|
+      public_send("#{k}=", v) if respond_to?("#{k}=")
+    end
 
-    result
+    HttpRequest.put('/clusters', self.as_json).ok?
   end
 
-  def update(options = {})
-    @name = options[:name] if options.include?(:name)
-    @load_balance = options[:load_balance] if options.include?(:load_balance)
+  # 获取一个cluster绑定的server列表
+  def servers
+    result = HttpRequest.get("/clusters/#{self.id}/binds")
+    return [] unless result.ok?
 
-    result = HttpRequest.put('/clusters', self.to_api_options)
+    (result.data || []).map do |server_id|
+      next if server_id.to_i.zero?
+      Server.find_by(id: server_id)
+    end.compact
+  end
 
-    result.ok?
+  # 解绑所有服务，过程不可逆
+  def unbind!
+    HttpRequest.delete("/clusters/#{self.id}/binds").ok?
+  end
+
+  def bind_server!(server_id)
+    options = {
+      cluster_id: self.id,
+      server_id: server_id.try(:to_i)
+    }
+    HttpRequest.put('/binds', options).ok?
   end
 
   class << self
@@ -53,7 +73,7 @@ class Cluster
 
     def create(options)
       cluster = self.new(options)
-      result = HttpRequest.put('/clusters', cluster.to_api_options)
+      result = HttpRequest.put('/clusters', cluster.as_json)
 
       return cluster unless result.ok?
 

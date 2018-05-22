@@ -1,0 +1,50 @@
+<%
+  unless local_assigns.key?(:clusters)
+    raise 'required params `clusters` for this template!'
+  end
+  unless local_assigns.key?(:without_actions)
+    without_actions = false
+  end
+%>
+
+<table border="2">
+  <tr>
+    <th>id</th>
+    <th>名字</th>
+    <th>负载均衡</th>
+    <% if !without_actions %>
+      <th>动作</th>
+    <% end %>
+  </tr>
+  <% clusters.each do |cluster| %>
+    <tr>
+      <td>
+        <%= cluster.id %>
+      </td>
+      <td>
+        <%= cluster.name %>
+      </td>
+      <td>
+        <%=t cluster.lb, scope: 'enum.lb' %>
+      </td>
+
+      <% if !without_actions %>
+        <td>
+          <%= link_to '编辑', edit_cluster_path(cluster.id), class: 'btn btn-primary btn-xs' %>
+          <%= link_to '删除', cluster_path(cluster.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+          <%= link_to '服务列表', servers_cluster_path(cluster.id), class: 'btn btn-primary btn-xs' %>
+          <%= button_tag '绑定服务', class: 'btn btn-primary btn-xs bind_server_modal_button', value: bind_server_cluster_path(cluster.id) %>
+        </td>
+      <% end %>
+    </tr>
+    <% end %>
+</table>
+
+<div id='modal_holder'></div>
+
+<script>
+  $('.bind_server_modal_button').on('click', function(){
+    renderModal('GET', this.value, {}, 'modal_holder')
+    $('#bind_server_modal').modal({focus: true, show: true})
+  })
+</script>

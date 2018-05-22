@@ -20,7 +20,7 @@ JSONEditor.defaults.theme = 'bootstrap3';
 JSONEditor.defaults.iconlib = 'bootstrap3';
 JSONEditor.defaults.options.object_layout = 'grid'
 
-submitData = function (method, url, data) {
+let submitData = function (method, url, data) {
   let xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -42,4 +42,23 @@ submitData = function (method, url, data) {
   };
 
   xhr.send(JSON.stringify(data));
+}
+
+let syncData = function (method, url, data) {
+  let xhr = new XMLHttpRequest();
+  xhr.open(method, url, false);
+  xhr.onreadystatechange == function () {
+    if (xhr.readyState !== xhr.DONE) {
+      return
+    }
+    callback(xhr.response);
+  }
+  xhr.send(JSON.stringify(data));
+
+  return xhr
+}
+
+let renderModal = function (method, target, data, bind_id) {
+  let bind_dom = document.getElementById(bind_id);
+  bind_dom.innerHTML = syncData(method, target, data).response;
 }

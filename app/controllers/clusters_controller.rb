@@ -1,5 +1,7 @@
 class ClustersController < ApplicationController
-  before_action :set_cluster, only: [:show, :edit, :update]
+  before_action :set_cluster, only: [
+    :show, :edit, :update, :servers, :unbind, :bind_server
+  ]
 
   def index
     @clusters = Cluster.all(after: after_index, limit: per_page)
@@ -33,6 +35,30 @@ class ClustersController < ApplicationController
 
   def destroy
     redirect_to clusters_url if Cluster.destroy(params.slice(:id))
+  end
+
+  def servers
+    @servers = @cluster.servers
+  end
+
+  def unbind
+    @cluster.unbind!
+
+    redirect_to clusters_path
+  end
+
+  def bind_server
+    if request.get?
+      @servers = Server.all
+      render text: render_to_string(layout: nil), layout: nil
+      return
+    end
+
+    if @cluster.bind_server!(params[:server_id])
+      redirect_to servers_cluster_path(@cluster.id)
+    else
+      render json: {msg: '绑定失败'}
+    end
   end
 
   private

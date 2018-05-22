@@ -68,7 +68,7 @@ class Api
   end
 
   class << self
-    def all(options)
+    def all(options = {})
       result = HttpRequest.get('/apis', options)
 
       return [] unless result.ok?

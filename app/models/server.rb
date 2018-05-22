@@ -17,8 +17,14 @@ class Server
     key_of_pt(@protocol)
   end
 
-  def id=(v)
-    @id = v.try(:to_i)
+  def name
+    "#{self.addr}-#{self.protocol_name}"
+  end
+
+  [:id, :max_qps, :protocol].each do |x|
+    define_method "#{x}=".to_sym do |v|
+      instance_variable_set("@#{x}", v.try(:to_i))
+    end
   end
 
   def heath_check=(v)
@@ -29,14 +35,6 @@ class Server
     @circuit_breaker = CircuitBreaker.new(v || {})
   end
 
-  def max_qps=(v)
-    @max_qps = v.try(:to_i)
-  end
-
-  def protocol=(v)
-    @protocol = v.try(:to_i)
-  end
-
   def update(options = {})
     options.each_pair do |k, v|
       public_send("#{k}=", v) if respond_to?("#{k}=")
@@ -45,6 +43,17 @@ class Server
 
     result.ok?
   end
+
+  # options
+  #   cluster_id required
+  def unbind!(options)
+    opt = {
+      cluster_id: options[:cluster_id].to_i,
+      server_id: self.id
+    }
+    HttpRequest.delete('/binds', opt).ok?
+  end
+
 
   class << self
     def all(options = {})

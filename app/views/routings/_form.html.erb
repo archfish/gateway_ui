@@ -8,8 +8,8 @@
   <%= label_tag :status %>
   <%= select_tag :status, options_for_select(Routing::Status, @routing.status) %></br>
   <%= label_tag :cluster_id %>
-  <%= number_field_tag :cluster_id, @routing.cluster_id %></br>
+  <%= select_tag :cluster_id, options_from_collection_for_select(@clusters, "id", "name") %></br>
   <%= label_tag :api %>
-  <%= number_field_tag :api, @routing.api %></br>
+  <%= select_tag :api, options_from_collection_for_select(@apis, "id", "name") %>
   <%= submit_tag '提交' %>
 <% end %>
