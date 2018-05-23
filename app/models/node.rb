@@ -1,15 +1,22 @@
 class Node
-  attr_accessor :cluster_id, :url_rewrite, :attr_name, :validations, :cache, :default_value, :use_default, :batch_index
+  def self.attributes
+    [
+      :cluster_id, :url_rewrite, :attr_name, :validations, :cache,
+      :default_value, :use_default, :batch_index
+    ]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
-    @cluster_id = args[:cluster_id]
-    @url_rewrite = args[:url_rewrite]
-    @attr_name = args[:attr_name]
-    @validations = args[:validations]
-    @cache = args[:cache]
-    @default_value = args[:default_value]
-    @use_default = args[:use_default]
-    @batch_index = args[:batch_index]
+    args ||= {}
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   def default_value=(v)
@@ -40,22 +47,44 @@ class Node
   end
 
   class Cache
-    attr_accessor :keys, :deadline, :conditions
+    def self.attributes
+      [
+        :keys, :deadline, :conditions
+      ]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
 
     def initialize(args = {})
-      self.keys = args[:keys]
-      self.deadline = args[:deadline]
-      self.conditions = args[:conditions]
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
   end
 
   class Validation
-    attr_accessor :parameter, :required, :rules
+    def self.attributes
+      [
+        :parameter, :required, :rules
+      ]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
 
     def initialize(args = {})
-      self.parameter = args[:parameter]
-      self.required = args[:required]
-      self.rules = args[:rules]
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
 
     def parameter=(v)
@@ -72,21 +101,44 @@ class Node
   end
 
   class Parameter
-    attr_accessor :name, :source, :index
+    def self.attributes
+      [
+        :name, :source, :index
+      ]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
 
     def initialize(args = {})
-      self.name = args[:name]
-      self.source = args[:source]
-      self.index = args[:index]
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
   end
 
   class ValidationRule
-    attr_accessor :rule_type, :expression
+    def self.attributes
+      [
+        :rule_type, :expression
+      ]
+    end
 
-    def initialize(args= {})
-      self.rule_type = args[:rule_type]
-      self.expression = args[:expression]
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
+
+    def initialize(args = {})
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
   end
 end

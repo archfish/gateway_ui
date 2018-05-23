@@ -19,12 +19,12 @@
   <tr>
     <th>请求路径</th>
     <th>响应内容</th>
-    <th>检查间隔</th>
-    <th>超时</th>
+    <th>检查间隔(s)</th>
+    <th>超时(s)</th>
     <% '以下为熔断配置' %>
-      <th>关闭延时</th>
+      <th>关闭延时(s)</th>
       <th>半开比例(%)</th>
-      <th>统计周期</th>
+      <th>统计周期(s)</th>
       <th>失效比例(%)则半开变关闭</th>
       <th>成功比例(%)则半开变开启</th>
   </tr>
@@ -51,21 +51,21 @@
         <%= hc.body %>
       </td>
       <td>
-        <%= hc.check_interval %>
+        <%= hc.check_interval_in_second %>
       </td>
       <td>
-        <%= hc.timeout %>
+        <%= hc.timeout_in_second %>
       </td>
 
       <% cb = server.circuit_breaker %>
       <td>
-        <%= cb.close_timeout %>
+        <%= cb.close_timeout_in_second %>
       </td>
       <td>
         <%= cb.half_traffic_rate %>
       </td>
       <td>
-        <%= cb.rate_check_period %>
+        <%= cb.rate_check_period_in_second %>
       </td>
       <td>
         <%= cb.failure_rate_to_close %>

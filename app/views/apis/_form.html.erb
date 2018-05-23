@@ -13,11 +13,10 @@
   let url = '<%= target %>';
 
   let editor = new JSONEditor(document.getElementById('editor_holder'), {
-    schema: <%=raw @api_schema || {} %>
+    schema: <%=raw @api_schema || {} %>,
+    no_additional_properties: true
   });
   let submit_button = document.getElementById('submit');
-
-  editor.getEditor('root.id').disable();
 
   if (api_value) {
     editor.setValue(api_value);

@@ -1,23 +1,24 @@
 class Api
   include Concerns::Enum
 
-  attr_accessor :id, :name, :url_pattern, :method, :domain, :status, :ip_access_control,
-                :default_value, :nodes, :auth_filter, :perms, :render_template, :use_default
+  def self.attributes
+    [
+      :id, :name, :url_pattern, :method, :domain, :status, :ip_access_control,
+      :default_value, :nodes, :auth_filter, :perms, :render_template, :use_default
+    ]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
-    self.id = args[:id].try(:to_i)
-    self.name = args[:name]
-    self.url_pattern = args[:url_pattern]
-    self.method = args[:method]
-    self.domain = args[:domain]
-    self.status = args[:status]
-    self.ip_access_control = args[:ip_access_control]
-    self.default_value = args[:default_value]
-    self.nodes = args[:nodes]
-    self.auth_filter = args[:auth_filter]
-    self.perms = args[:perms]
-    self.render_template = args[:render_template]
-    self.use_default = args[:use_default]
+    args ||= {}
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   [:id, :status].each do |x|

@@ -1,8 +1,19 @@
 class RenderTemplate
-  attr_accessor :objects
+  def self.attributes
+    [:objects]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
-    self.objects = args[:objects]
+    args ||= {}
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   def objects=(v)
@@ -12,12 +23,23 @@ class RenderTemplate
   end
 
   class RenderObject
-    attr_accessor :name, :attrs, :flat_attrs
+    def self.attributes
+      [
+        :name, :attrs, :flat_attrs
+      ]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
 
     def initialize(args = {})
-      self.name = args[:name]
-      self.attrs = args[:attrs]
-      self.flat_attrs = args[:flat_attrs]
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
 
     def attrs=(v)
@@ -27,11 +49,23 @@ class RenderTemplate
   end
 
   class Attr
-    attr_accessor :name, :extract_exp
+    def self.attributes
+      [
+        :name, :extract_exp
+      ]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
 
     def initialize(args = {})
-      self.name = args[:name]
-      self.extract_exp = args[:extract_exp]
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
   end
 end

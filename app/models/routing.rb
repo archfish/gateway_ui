@@ -1,16 +1,23 @@
 class Routing
   include Concerns::Enum
 
-  attr_accessor :id, :name, :cluster_id, :strategy, :traffic_rate, :status, :api
+  def self.attributes
+    [
+      :id, :name, :cluster_id, :strategy, :traffic_rate, :status, :api
+    ]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
-    self.id = args[:id]
-    self.name = args[:name]
-    self.cluster_id = args[:cluster_id]
-    self.strategy = args[:strategy]
-    self.traffic_rate = args[:traffic_rate]
-    self.status = args[:status]
-    self.api = args[:api]
+    args ||= {}
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   [:id, :cluster_id, :strategy, :traffic_rate, :status, :api].each do |x|

@@ -1,11 +1,19 @@
 class DefaultValue
-  attr_accessor :body, :headers, :cookies
+  def self.attributes
+    [:body, :headers, :cookies]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
-    return if args.nil?
-    self.body = args[:body]
-    self.headers = args[:headers]
-    self.cookies = args[:cookies]
+    args ||= {}
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   def headers=(v)
@@ -19,11 +27,21 @@ class DefaultValue
   end
 
   class Header
-    attr_accessor :name, :value
+    def self.attributes
+      [:name, :value]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
 
     def initialize(args = {})
-      self.name = args[:name]
-      self.value = args[:value]
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
   end
 

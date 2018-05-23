@@ -1,9 +1,19 @@
 class IpAccessControl
-  attr_accessor :whitelist, :blacklist
+  def self.attributes
+    [:whitelist, :blacklist]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
-    self.whitelist = args[:whitelist]
-    self.blacklist = args[:blacklist]
+    args ||= {}
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   # array or string

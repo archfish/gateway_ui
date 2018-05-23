@@ -1,13 +1,23 @@
 class Cluster
   include Concerns::Enum
 
-  attr_accessor :id, :name, :load_balance
+  def self.attributes
+    [
+      :id, :name, :load_balance
+    ]
+  end
+
+  def self.attribute_names
+    attributes.map(&:to_s)
+  end
+
+  attr_accessor *attributes
 
   def initialize(args = {})
     args ||= {}
-    self.id = args[:id]
-    self.name = args[:name]
-    self.load_balance = args[:load_balance]
+    self.class.attributes.each do |x|
+      self.public_send("#{x}=", args[x])
+    end
   end
 
   [:id, :load_balance].each do |x|

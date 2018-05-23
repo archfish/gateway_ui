@@ -17,9 +17,9 @@ class ApisController < ApplicationController
     @api = Api.create(params)
 
     if @api.id
-      redirect_to apis_url
+      render json: {url: apis_url}, status: 301
     else
-      render :new
+      render json: {msg: '创建失败'}
     end
   end
 
@@ -33,6 +33,10 @@ class ApisController < ApplicationController
     end
   end
 
+  def destroy
+    redirect_to apis_url if Api.destroy(params.slice(:id))
+  end
+
   private
 
   def set_api
@@ -40,6 +44,7 @@ class ApisController < ApplicationController
   end
 
   def set_schema
+    clusters = Cluster.all()
     @api_schema = <<-API
     {
       "type": "object",
@@ -134,11 +139,6 @@ class ApisController < ApplicationController
         }
       },
       "properties": {
-        "id": {
-          "type": "integer",
-          "title": "Id",
-          "propertyOrder": 10
-        },
         "name": {
           "type": "string",
           "title": "Name",
@@ -226,7 +226,11 @@ class ApisController < ApplicationController
             "properties": {
               "cluster_id": {
                 "type": "integer",
-                "title": "ClusterID"
+                "title": "ClusterID",
+                "enum": #{clusters.map(&:id)},
+                "options": {
+                  "enum_titles": #{clusters.map(&:name)}
+                }
               },
               "url_rewrite": {
                 "type": "string",
