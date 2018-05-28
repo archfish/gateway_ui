@@ -106,6 +106,7 @@ class ApisController < ApplicationController
               "type": "string",
               "title": "Body",
               "format": "textarea",
+              "description": "内容可以为Base64编码，也可以为原始数据",
               "options": {
                 "grid_columns": 12
               },

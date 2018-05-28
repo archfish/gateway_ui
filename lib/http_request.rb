@@ -54,7 +54,8 @@ module HttpRequest
   end
 
   def get_url(uri = '')
-    "http://localhost:9093/v1#{uri}"
+    @host ||= ENV['GATEWAY_BACKEND'] || 'localhost:9093'
+    "http://#{@host}/v1#{uri}"
   end
 
   # type: [:underscore, :camelize, :lower_camelize]

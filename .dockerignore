@@ -1,0 +1,11 @@
+.byebug_history
+.env*
+.git
+.gitignore
+Dockerfile
+Makefile
+log/*
+node_modules/*
+public/assets/*
+tmp/*
+doc/*

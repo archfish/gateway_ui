@@ -16,6 +16,16 @@ class DefaultValue
     end
   end
 
+  def body=(v)
+    return if v.nil?
+    @body = (base64_encode?(v) ? v : Base64.encode64(v)).strip
+  end
+
+  def body
+    return if @body.nil?
+    Base64.decode64(@body)
+  end
+
   def headers=(v)
     return if v.nil?
     @headers = v.map{ |x| Header.new(x) }
@@ -25,6 +35,12 @@ class DefaultValue
     return if v.nil?
     @cookies = v.map{ |x| Cookie.new(x) }
   end
+
+  private
+  def base64_encode?(v)
+    v =~ /^([A-Za-z0-9+\/]{4})*([A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}==)$/
+  end
+
 
   class Header
     def self.attributes
