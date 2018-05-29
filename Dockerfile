@@ -65,6 +65,6 @@ ENV GATEWAY_BACKEND="localhost:9093"
 
 WORKDIR ${APP_ROOT}
 
-EXPOSE 6000
+EXPOSE 3000
 
-CMD [ "bundle", "exec", "rails", "s", "-b", "0.0.0.0", "-p", "6000" ]
+CMD [ "bundle", "exec", "rails", "s", "-b", "0.0.0.0" ]

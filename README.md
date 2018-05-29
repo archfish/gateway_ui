@@ -16,7 +16,7 @@ make
 ## 启动
 
 ```shell
-docker run -d --restart always -p 6000:6000 \
+docker run -d --restart always -p 3000:3000 \
         --name gateway_ui \
         -u 1001:1001 \
         -h gateway.ui.production \
@@ -31,6 +31,11 @@ docker run -d --restart always -p 6000:6000 \
 `GATEWAY_BACKEND`网关restful API的服务地址+端口号；
 打包出来的images的tag自动以`%Y%m%d%H%M`格式保存；
 
+## 网易镜像仓库
+
+```shell
+docker pull hub.c.163.com/weihailang/gateway_ui:latest
+```
 
 ## 注意
 
