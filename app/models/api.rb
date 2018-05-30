@@ -32,26 +32,27 @@ class Api
   end
 
   def default_value=(v)
+    return @default_value = nil if v.nil?
     @default_value = v.is_a?(DefaultValue) ? v : DefaultValue.new(v)
   end
 
   def nodes=(v)
-    return if v.nil?
+    return @nodes = nil if v.nil?
     @nodes = v.map{ |x| x.is_a?(Node) ? x : Node.new(x) }
   end
 
   def render_template=(v)
-    return if v.nil?
+    return @render_template = nil if v.nil?
     @render_template = RenderTemplate.new(v)
   end
 
   def ip_access_control=(v)
-    return if v.nil?
+    return @ip_access_control = nil if v.nil?
     @ip_access_control = v.is_a?(IpAccessControl) ? v : IpAccessControl.new(v)
   end
 
   def perms=(v)
-    return if v.nil?
+    return @perms = nil if v.nil?
     @perms = v.is_a?(String) ? v.split(',').map(&:strip) : v
   end
 

@@ -6,83 +6,61 @@
     without_actions = false
   end
 %>
-<table border="2">
-  <tr>
-    <th rowspan="2">id</th>
-    <th rowspan="2">真实服务</th>
-    <th rowspan="2">通讯协议</th>
-    <th rowspan="2">最大QPS</th>
-    <th colspan="4">健康检查</th>
-    <th colspan="5">熔断</th>
-    <th rowspan="2">操作</th>
-  </tr>
-  <tr>
-    <th>请求路径</th>
-    <th>响应内容</th>
-    <th>检查间隔(s)</th>
-    <th>超时(s)</th>
-    <% '以下为熔断配置' %>
-      <th>关闭延时(s)</th>
-      <th>半开比例(%)</th>
-      <th>统计周期(s)</th>
-      <th>失效比例(%)则半开变关闭</th>
-      <th>成功比例(%)则半开变开启</th>
-  </tr>
-  <% @servers.each do |server| %>
+<table class="table table-striped">
+  <thead>
     <tr>
-      <td>
-        <%= server.id %>
-      </td>
-      <td>
-        <%= server.addr %>
-      </td>
-      <td>
-        <%= server.protocol_name %>
-      </td>
-      <td>
-        <%= server.max_qps %>
-      </td>
-
-      <% hc = server.heath_check %>
-      <td>
-        <%= hc.path %>
-      </td>
-      <td>
-        <%= hc.body %>
-      </td>
-      <td>
-        <%= hc.check_interval_in_second %>
-      </td>
-      <td>
-        <%= hc.timeout_in_second %>
-      </td>
-
-      <% cb = server.circuit_breaker %>
-      <td>
-        <%= cb.close_timeout_in_second %>
-      </td>
-      <td>
-        <%= cb.half_traffic_rate %>
-      </td>
-      <td>
-        <%= cb.rate_check_period_in_second %>
-      </td>
-      <td>
-        <%= cb.failure_rate_to_close %>
-      </td>
-      <td>
-        <%= cb.succeed_rate_to_open %>
-      </td>
-
-      <td>
-        <% if !without_actions %>
-          <%= link_to '编辑', edit_server_path(server.id), class: 'btn btn-warning btn-xs' %>
-          <%= link_to '删除', server_path(server.id), method: :delete, class: 'btn btn-danger btn-xs' %>
-        <% end %>
-        <% if local_assigns.key?(:cluster) %>
-          <%= link_to '解绑', unbind_server_path(id: server.id, cluster_id: cluster.id), method: :delete, class: 'btn btn-danger btn-xs' %>
-        <% end %>
-      </td>
+      <th rowspan="2">id</th>
+      <th rowspan="2">真实服务</th>
+      <th rowspan="2">通讯协议</th>
+      <th rowspan="2">最大QPS</th>
+      <th colspan="4">健康检查</th>
+      <th colspan="5">熔断</th>
+      <th rowspan="2">操作</th>
     </tr>
-  <% end %>
+    <tr>
+      <th>请求路径</th>
+      <th>响应内容</th>
+      <th>检查间隔(s)</th>
+      <th>超时(s)</th>
+      <% '以下为熔断配置' %>
+        <th>关闭延时(s)</th>
+        <th>半开比例(%)</th>
+        <th>统计周期(s)</th>
+        <th>失效比例(%)则半开变关闭</th>
+        <th>成功比例(%)则半开变开启</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @servers.each do |server| %>
+      <tr>
+        <td><%= server.id %></td>
+        <td><%= server.addr %></td>
+        <td><%= server.protocol_name %></td>
+        <td><%= server.max_qps %></td>
+
+        <% hc = server.heath_check %>
+        <td><%= hc.try(:path) %></td>
+        <td><%= hc.try(:body) %></td>
+        <td><%= hc.try(:check_interval_in_second) %></td>
+        <td><%= hc.try(:timeout_in_second) %></td>
+
+        <% cb = server.circuit_breaker %>
+        <td><%= cb.try(:close_timeout_in_second) %></td>
+        <td><%= cb.try(:half_traffic_rate) %></td>
+        <td><%= cb.try(:rate_check_period_in_second) %></td>
+        <td><%= cb.try(:failure_rate_to_close) %></td>
+        <td><%= cb.try(:succeed_rate_to_open) %></td>
+
+        <td>
+          <% if !without_actions %>
+            <%= link_to '编辑', edit_server_path(server.id), class: 'btn btn-warning btn-xs' %>
+            <%= link_to '删除', server_path(server.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+          <% end %>
+          <% if local_assigns.key?(:cluster) %>
+            <%= link_to '解绑', unbind_server_path(id: server.id, cluster_id: cluster.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

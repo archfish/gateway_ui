@@ -20,10 +20,17 @@ class Node
   end
 
   def default_value=(v)
+    return @default_value = nil if v.nil?
     @default_value = DefaultValue.new(v)
   end
 
   def cluster=(v)
+    if v.nil?
+      @cluster = nil
+      self.cluster_id = nil
+      return
+    end
+
     @cluster = v.is_a?(Cluster) ? v : Cluster.new(v)
 
     self.cluster_id = @cluster.id
@@ -37,12 +44,12 @@ class Node
   end
 
   def cache=(v)
-    return if v.nil?
+    return @cache = nil if v.nil?
     @cache = v.is_a?(Cache) ? v : Cache.new(v)
   end
 
   def validations=(v)
-    return if v.nil?
+    return @validations = nil if v.nil?
     @validations = v.map{ |x| x.is_a?(Validation) ? x : Validation.new(x) }
   end
 
@@ -88,13 +95,13 @@ class Node
     end
 
     def parameter=(v)
-      return if v.nil?
+      return @parameter = nil if v.nil?
 
       @parameter = v.is_a?(Parameter) ? v : Parameter.new(v)
     end
 
     def rules=(v)
-      return if v.nil?
+      return @rules = nil if v.nil?
 
       @rules = v.map{ |x| x.is_a?(ValidationRule) ? x : ValidationRule.new(x) }
     end

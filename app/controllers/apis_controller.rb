@@ -14,7 +14,7 @@ class ApisController < ApplicationController
   def show; end
 
   def create
-    @api = Api.create(params)
+    @api = Api.create(server_params)
 
     if @api.id
       render json: {url: apis_url}, status: 301
@@ -24,7 +24,7 @@ class ApisController < ApplicationController
   end
 
   def update
-    ok = @api.update(params)
+    ok = @api.update(server_params)
 
     if ok
       render json: {url: apis_url}, status: 301
@@ -41,6 +41,26 @@ class ApisController < ApplicationController
 
   def set_api
     @api = Api.find_by(params.slice(:id))
+  end
+
+  def server_params
+    params.delete(:api)
+    [:ip_access_control, :default_value, :render_template].each do |x|
+      if params[x].blank? || params[x].as_json.all?{|_, v| v.blank?}
+        params[x] = nil
+      end
+    end
+    if params[:nodes].present?
+      params[:nodes].each do |x|
+        byebug
+        x[:cache] = nil if (x[:cache] || {})[:keys].blank?
+        if x[:default_value].blank? || x[:default_value].as_json.all?{|_, v| v.blank?}
+          x[:default_value] = nil
+        end
+      end
+    end
+    puts params.to_json
+    params
   end
 
   def set_schema

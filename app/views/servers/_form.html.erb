@@ -6,23 +6,23 @@
   <%= label_tag :max_qps %>
   <%= number_field_tag :max_qps, @server.max_qps %></br>
   <%= label_tag :'heath_check[path]' %>
-  <%= text_field_tag :'heath_check[path]', @server.heath_check.path %></br>
+  <%= text_field_tag :'heath_check[path]', @server.heath_check.try(:path) %></br>
   <%= label_tag :'heath_check[body]' %>
-  <%= text_field_tag :'heath_check[body]', @server.heath_check.body %></br>
+  <%= text_field_tag :'heath_check[body]', @server.heath_check.try(:body) %></br>
   <%= label_tag :'heath_check[check_interval_in_second]' %>
-  <%= number_field_tag :'heath_check[check_interval_in_second]', @server.heath_check.check_interval_in_second %></br>
+  <%= number_field_tag :'heath_check[check_interval_in_second]', @server.heath_check.try(:check_interval_in_second) %></br>
   <%= label_tag :'heath_check[timeout_in_second]' %>
-  <%= number_field_tag :'heath_check[timeout_in_second]', @server.heath_check.timeout_in_second %></br>
+  <%= number_field_tag :'heath_check[timeout_in_second]', @server.heath_check.try(:timeout_in_second) %></br>
 
   <%= label_tag :'circuit_breaker[close_timeout_in_second]' %>
-  <%= number_field_tag :'circuit_breaker[close_timeout_in_second]', @server.circuit_breaker.close_timeout_in_second %></br>
+  <%= number_field_tag :'circuit_breaker[close_timeout_in_second]', @server.circuit_breaker.try(:close_timeout_in_second) %></br>
   <%= label_tag :'circuit_breaker[half_traffic_rate]' %>
-  <%= number_field_tag :'circuit_breaker[half_traffic_rate]', @server.circuit_breaker.half_traffic_rate %></br>
+  <%= number_field_tag :'circuit_breaker[half_traffic_rate]', @server.circuit_breaker.try(:half_traffic_rate) %></br>
   <%= label_tag :'circuit_breaker[rate_check_period_in_second]' %>
-  <%= number_field_tag :'circuit_breaker[rate_check_period_in_second]', @server.circuit_breaker.rate_check_period_in_second %></br>
+  <%= number_field_tag :'circuit_breaker[rate_check_period_in_second]', @server.circuit_breaker.try(:rate_check_period_in_second) %></br>
   <%= label_tag :'circuit_breaker[failure_rate_to_close]' %>
-  <%= number_field_tag :'circuit_breaker[failure_rate_to_close]', @server.circuit_breaker.failure_rate_to_close %></br>
+  <%= number_field_tag :'circuit_breaker[failure_rate_to_close]', @server.circuit_breaker.try(:failure_rate_to_close) %></br>
   <%= label_tag :'circuit_breaker[succeed_rate_to_open]' %>
-  <%= number_field_tag :'circuit_breaker[succeed_rate_to_open]', @server.circuit_breaker.succeed_rate_to_open %></br>
+  <%= number_field_tag :'circuit_breaker[succeed_rate_to_open]', @server.circuit_breaker.try(:succeed_rate_to_open) %></br>
   <%= submit_tag '提交' %>
 <% end %>

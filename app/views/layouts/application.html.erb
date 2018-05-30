@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GatewayRails</title>
+    <title>API网关配置中心</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
-    <%# "<link rel='stylesheet' href='//cdn.bootcss.com/foundation/6.4.3/css/foundation.min.css'>" %>
-    <%# "<link rel='stylesheet' href='//cdn.bootcss.com/foundation/5.5.3/css/foundation.min.css'>" %>
   </head>
 
   <body>
     <div class='container'>
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/">GatewayGUI</a>
+          </div>
+          <div>
+            <ul class="nav navbar-nav">
+              <li><%= link_to 'Cluster', clusters_path %></li>
+              <li><%= link_to 'Server', servers_path %></li>
+              <li><%= link_to 'Routing', routings_path %></li>
+              <li><%= link_to 'Api', apis_path %></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
       <%= yield %>
     </div>
   </body>

@@ -27,6 +27,8 @@ class Routing
   end
 
   def cluster=(v)
+    return @cluster = nil if v.nil?
+
     self.cluster_id = v.id
     @cluster = v
   end
@@ -39,6 +41,12 @@ class Routing
   end
 
   def api_i=(v)
+    if v.nil?
+      @api_i = nil
+      self.api = nil
+      return
+    end
+
     self.api = v.id
     @api_i = v
   end
@@ -46,7 +54,8 @@ class Routing
   def api_i(rel = false)
     return nil if self.api.blank?
     return @api_i if !rel && @api_i && @api_i.id == self.api
-    #  @api_i = Api.find_by(id: self.api)
+
+     @api_i = Api.find_by(id: self.api)
   end
 
   def strategy_name

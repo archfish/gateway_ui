@@ -1,34 +1,38 @@
-<table border="2">
-<tr>
-  <th>id</th>
-  <th>名字</th>
-  <th>URL模式</th>
-  <th>请求方法</th>
-  <th>请求域名</th>
-  <th>状态</th>
-  <th>强制使用默认值</th>
-  <th>操作</th>
-</tr>
-  <% @apis.each do |api| %>
+<table class="table table-striped">
+  <thead>
     <tr>
-      <td><%= api.id %></td>
-      <td><%= api.name %></td>
-      <td><%= api.url_pattern %></td>
-      <td><%= api.method %></td>
-      <td><%= api.domain %></td>
-      <td><%= api.status_name %></td>
-      <td><%= api.use_default %></td>
-      <td>
-        <%= link_to '编辑', edit_api_path(api.id) %>
-        <%= link_to '查看', api_path(api.id) %>
-        <%= link_to '删除', api_path(api.id), method: :delete %>
-      </td>
+      <th>id</th>
+      <th>名字</th>
+      <th>URL模式</th>
+      <th>请求方法</th>
+      <th>请求域名</th>
+      <th>状态</th>
+      <th>强制使用默认值</th>
+      <th>操作</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @apis.each do |api| %>
+      <tr>
+        <td><%= api.id %></td>
+        <td><%= api.name %></td>
+        <td><%= api.url_pattern %></td>
+        <td><%= api.method %></td>
+        <td><%= api.domain %></td>
+        <td><%= api.status_name %></td>
+        <td><%= api.use_default %></td>
+        <td>
+          <%= link_to '查看', api_path(api.id), class: 'btn btn-primary btn-xs' %>
+          <%= link_to '编辑', edit_api_path(api.id), class: 'btn btn-warning btn-xs' %>
+          <%= link_to '删除', api_path(api.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+        </td>
+      </tr>
+    <% end %>
+  <tbody>
 </table>
 
-<%= link_to '新建API', new_api_path %>
+<%= link_to '新建API', new_api_path, class: 'btn btn-primary' %>
 
 <% last_id = @apis.max{|x| x.id}.try(:id).to_i %>
-<%= link_to '第一页', apis_path(after: 0, per_page: @per_page || 10) %>
-<%= link_to_if last_id, '下一页', apis_path(after: last_id, per_page: @per_page || 10) %>
+<%= link_to '第一页', apis_path(after: 0, per_page: @per_page || 10), class: 'btn btn-primary' %>
+<%= link_to_if last_id, '下一页', apis_path(after: last_id, per_page: @per_page || 10), class: 'btn btn-primary' %>

@@ -12,7 +12,7 @@ class ServersController < ApplicationController
   def edit; end
 
   def update
-    res = @server.update(params)
+    res = @server.update(server_params)
 
     if res
       redirect_to servers_url, notice: '更新成功'
@@ -22,7 +22,7 @@ class ServersController < ApplicationController
   end
 
   def create
-    @server = Server.create(params)
+    @server = Server.create(server_params)
 
     if @server.id
       redirect_to servers_url
@@ -44,5 +44,15 @@ class ServersController < ApplicationController
 
   def set_server
     @server = Server.find_by(params.slice(:id))
+  end
+
+  def server_params
+    if params[:heath_check].blank? || params[:heath_check].as_json.all?{|_, v| v.blank?}
+      params[:heath_check] = nil
+    end
+    if params[:circuit_breaker].blank? || params[:circuit_breaker].as_json.all?{|_, v| v.blank?}
+      params[:circuit_breaker] = nil
+    end
+    params
   end
 end

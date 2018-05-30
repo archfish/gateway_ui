@@ -33,17 +33,18 @@ class Server
   end
 
   def heath_check=(v)
-    @heath_check = HeathCheck.new(v || {})
+    @heath_check = v.nil? ? nil : HeathCheck.new(v)
   end
 
   def circuit_breaker=(v)
-    @circuit_breaker = CircuitBreaker.new(v || {})
+    @circuit_breaker = v.nil? ? nil : CircuitBreaker.new(v)
   end
 
   def update(options = {})
     options.each_pair do |k, v|
       public_send("#{k}=", v) if respond_to?("#{k}=")
     end
+
     result = HttpRequest.put('/servers', self.as_json)
 
     result.ok?

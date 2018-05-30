@@ -17,7 +17,7 @@ class RenderTemplate
   end
 
   def objects=(v)
-    return if v.nil?
+    return @objects = nil if v.nil?
 
     @objects = v.map{|x| x.is_a?(RenderObject) ? x : RenderObject.new(x) }
   end
@@ -43,7 +43,7 @@ class RenderTemplate
     end
 
     def attrs=(v)
-      return if v.nil?
+      return @attrs = nil if v.nil?
       @attrs = v.map{ |x| x.is_a?(Attr) ? x : Attr.new(x) }
     end
   end

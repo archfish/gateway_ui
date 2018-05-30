@@ -17,7 +17,7 @@ class DefaultValue
   end
 
   def body=(v)
-    return if v.nil?
+    return @body = nil if v.nil?
     @body = (base64_encode?(v) ? v : Base64.encode64(v)).strip
   end
 
@@ -27,12 +27,12 @@ class DefaultValue
   end
 
   def headers=(v)
-    return if v.nil?
+    return @headers = nil if v.nil?
     @headers = v.map{ |x| Header.new(x) }
   end
 
   def cookies=(v)
-    return if v.nil?
+    return @cookies = nil if v.nil?
     @cookies = v.map{ |x| Cookie.new(x) }
   end
 
