@@ -1,2 +1,24 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.hori-line {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  span {
+    background-color: white;
+    color: red;
+    position: relative;
+    padding: 0 5px;
+  }
+}
+
+.hori-line:before {
+  background: #000 none repeat scroll 0 0;
+  border-top: 1px solid #EEEEEE;
+  content: "";
+  display: block;
+  position: relative;
+  top: 8px;
+  text-align: center;
+}

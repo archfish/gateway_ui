@@ -13,8 +13,6 @@
 //= require jquery
 //= require bootstrap-sprockets
 //= require jsoneditor.min.js
-//= require rails-ujs
-//= require turbolinks
 
 JSONEditor.defaults.theme = 'bootstrap3';
 JSONEditor.defaults.iconlib = 'bootstrap3';

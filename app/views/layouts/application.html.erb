@@ -10,22 +10,22 @@
   </head>
 
   <body>
-    <div class='container'>
-      <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="/">GatewayGUI</a>
-          </div>
-          <div>
-            <ul class="nav navbar-nav">
-              <li><%= link_to 'Cluster', clusters_path %></li>
-              <li><%= link_to 'Server', servers_path %></li>
-              <li><%= link_to 'Routing', routings_path %></li>
-              <li><%= link_to 'Api', apis_path %></li>
-            </ul>
-          </div>
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">GatewayGUI</a>
         </div>
-      </nav>
+        <div>
+          <ul class="nav navbar-nav">
+            <% navbar_list.each do |x| %>
+              <%=raw x %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class='container-fluid'>
       <%= yield %>
     </div>
   </body>

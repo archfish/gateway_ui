@@ -1,7 +1,15 @@
-<%= form_tag(target, method: method) do |f| %>
-  <%= label_tag :name %>
-  <%= text_field_tag :name, @cluster.name %>
-  <%= label_tag :load_balance %>
-  <%= select_tag :load_balance, options_for_select(Cluster::LoadBalance, @cluster.load_balance) %>
-  <%= submit_tag '提交' %>
-<% end %>
+<div class=''>
+  <%= form_tag(target, method: method, role: "form") do |f| %>
+    <div class="form-group col-md-5">
+      <%= label_tag :name, nil, class: 'control-label' %>
+      <%= text_field_tag :name, @cluster.name, class: 'form-control' %>
+    </div>
+    <div class="form-group col-md-5">
+      <%= label_tag :load_balance, nil, class: 'control-label' %>
+      <%= select_tag :load_balance, options_for_select(Cluster::LoadBalance, @cluster.load_balance), class: 'form-control' %>
+    </div>
+    <div class='form-group col-md-11'>
+      <%= submit_tag '提交', class: 'btn btn-default' %>
+    </div>
+  <% end %>
+</div>

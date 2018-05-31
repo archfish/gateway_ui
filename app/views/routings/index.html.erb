@@ -18,7 +18,7 @@
         <td><%=t routing.strategy_name, scope: 'enum.strategy' %></td>
         <td><%= routing.traffic_rate %></td>
         <td><%= routing.status_name %></td>
-        <td><%= routing.api %></td>
+        <td><%= link_to routing.api, api_path(routing.api) %></td>
         <td>
           <%= link_to '编辑', edit_routing_path(routing.id), class: 'btn btn-warning btn-xs' %>
           <%= link_to '删除', routing_path(routing.id), method: :delete, class: 'btn btn-danger btn-xs' %>
