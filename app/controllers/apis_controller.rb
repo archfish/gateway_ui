@@ -52,7 +52,6 @@ class ApisController < ApplicationController
     end
     if params[:nodes].present?
       params[:nodes].each do |x|
-        byebug
         x[:cache] = nil if (x[:cache] || {})[:keys].blank?
         if x[:default_value].blank? || x[:default_value].as_json.all?{|_, v| v.blank?}
           x[:default_value] = nil
