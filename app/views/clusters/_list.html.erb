@@ -22,7 +22,7 @@
     <% clusters.each do |cluster| %>
       <tr>
         <td>
-          <%= cluster.id %>
+          <%= link_to cluster.id, cluster_path(cluster.id), class: 'btn btn-info btn-xs' %>
         </td>
         <td>
           <%= cluster.name %>
@@ -33,7 +33,7 @@
 
         <% if !without_actions %>
           <td>
-            <%= link_to '编辑', edit_cluster_path(cluster.id), class: 'btn btn-primary btn-xs' %>
+            <%= link_to '编辑', edit_cluster_path(cluster.id), class: 'btn btn-warning btn-xs' %>
             <%= link_to '删除', cluster_path(cluster.id), method: :delete, class: 'btn btn-danger btn-xs' %>
             <%= link_to '服务列表', servers_cluster_path(cluster.id), class: 'btn btn-primary btn-xs' %>
             <%= button_tag '绑定服务', class: 'btn btn-primary btn-xs bind_server_modal_button', value: bind_server_cluster_path(cluster.id) %>

@@ -33,6 +33,8 @@ class ClustersController < ApplicationController
     end
   end
 
+  def show; end
+
   def destroy
     redirect_to clusters_url if Cluster.destroy(params.slice(:id))
   end

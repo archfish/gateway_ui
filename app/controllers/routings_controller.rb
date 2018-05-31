@@ -1,5 +1,5 @@
 class RoutingsController < ApplicationController
-  before_action :set_routing, only: [:edit, :update]
+  before_action :set_routing, only: [:show, :edit, :update]
   before_action :get_related_list, only: [:new, :edit]
 
   def index
@@ -11,6 +11,7 @@ class RoutingsController < ApplicationController
   end
 
   def edit; end
+  def show; end
 
   def update
     res = @routing.update(params)

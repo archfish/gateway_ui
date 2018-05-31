@@ -173,7 +173,7 @@ class ApisController < ApplicationController
           "type": "string",
           "title": "Method",
           "enum": [
-            "GET", "POST", "PUT", "DELETE", "*"
+            "GET", "POST", "PUT", "DELETE", "*", ""
           ],
           "propertyOrder": 40
         },
@@ -435,7 +435,10 @@ class ApisController < ApplicationController
           "title": "UseDefault",
           "propertyOrder": 85
         }
-      }
+      },
+      "required": [
+        "method", "status"
+      ]
     }
     API
   end

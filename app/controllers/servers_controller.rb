@@ -1,5 +1,5 @@
 class ServersController < ApplicationController
-  before_action :set_server, only: [:edit, :update, :unbind]
+  before_action :set_server, only: [:show, :edit, :update, :unbind]
 
   def index
     @servers = Server.all(after: after_index, limit: per_page)
@@ -10,6 +10,7 @@ class ServersController < ApplicationController
   end
 
   def edit; end
+  def show; end
 
   def update
     res = @server.update(server_params)

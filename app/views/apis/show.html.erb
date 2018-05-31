@@ -1,6 +1,1 @@
-<%= render partial: 'form', locals: {target: '#', method: ''} %>
-
-<script>
-  document.getElementById('form_operations').hidden = true
-  editor.disable()
-</script>
+<%=raw render_pretty_json(@api) %>

@@ -13,7 +13,7 @@
   <tbody>
     <% @routings.each do |routing| %>
       <tr>
-        <td><%= routing.id %></td>
+        <td><%= link_to routing.id, routing_path(routing.id), class: 'btn btn-info btn-xs' %></td>
         <td><%= routing.name %></td>
         <td><%=t routing.strategy_name, scope: 'enum.strategy' %></td>
         <td><%= routing.traffic_rate %></td>

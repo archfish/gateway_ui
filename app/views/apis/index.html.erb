@@ -14,7 +14,7 @@
   <tbody>
     <% @apis.each do |api| %>
       <tr>
-        <td><%= api.id %></td>
+        <td><%= link_to api.id, api_path(api.id), class: 'btn btn-info btn-xs' %></td>
         <td><%= api.name %></td>
         <td><%= api.url_pattern %></td>
         <td><%= api.method %></td>
@@ -22,7 +22,6 @@
         <td><%= api.status_name %></td>
         <td><%= api.use_default %></td>
         <td>
-          <%= link_to '查看', api_path(api.id), class: 'btn btn-primary btn-xs' %>
           <%= link_to '编辑', edit_api_path(api.id), class: 'btn btn-warning btn-xs' %>
           <%= link_to '删除', api_path(api.id), method: :delete, class: 'btn btn-danger btn-xs' %>
         </td>

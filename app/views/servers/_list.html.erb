@@ -33,7 +33,7 @@
   <tbody>
     <% @servers.each do |server| %>
       <tr>
-        <td><%= server.id %></td>
+        <td><%= link_to server.id, server_path(server.id), class: 'btn btn-info btn-xs' %></td>
         <td><%= server.addr %></td>
         <td><%= server.protocol_name %></td>
         <td><%= server.max_qps %></td>
