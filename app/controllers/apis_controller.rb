@@ -1,6 +1,6 @@
 class ApisController < ApplicationController
-  before_action :set_api, only: [:edit, :update, :show]
-  before_action :set_schema, only: [:new, :edit, :show]
+  before_action :set_api, only: [:edit, :update, :show, :destroy]
+  before_action :set_schema, only: [:new, :edit]
 
   def index
     @apis = Api.all(after: after_index, limit: per_page)
@@ -34,7 +34,15 @@ class ApisController < ApplicationController
   end
 
   def destroy
-    redirect_to apis_url if Api.destroy(params.slice(:id))
+    begin
+      @api.destroy!
+      flash.notice = "Api #{@api.id}-#{@api.name} destroyed!"
+    rescue => exp
+      log(exp, 'apis#destroy')
+      flash.alert = exp.message
+    end
+
+    redirect_to apis_url
   end
 
   private

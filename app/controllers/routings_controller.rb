@@ -1,5 +1,5 @@
 class RoutingsController < ApplicationController
-  before_action :set_routing, only: [:show, :edit, :update]
+  before_action :set_routing, only: [:show, :edit, :update, :destroy]
   before_action :get_related_list, only: [:new, :edit]
 
   def index
@@ -34,7 +34,15 @@ class RoutingsController < ApplicationController
   end
 
   def destroy
-    redirect_to routings_url if Routing.destroy(params.slice(:id))
+    begin
+      @routing.destroy!
+      flash.notice = "Routing #{@routing.id} destroyed!"
+    rescue => exp
+      log(exp, 'routings#destroy')
+      flash.alert = exp.message
+    end
+
+    redirect_to routings_url
   end
 
   private

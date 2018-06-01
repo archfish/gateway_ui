@@ -8,6 +8,7 @@
       <th>请求域名</th>
       <th>状态</th>
       <th>强制使用默认值</th>
+      <th>关联Cluster</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -21,9 +22,15 @@
         <td><%= api.domain %></td>
         <td><%= api.status_name %></td>
         <td><%= api.use_default %></td>
+        <% cluster_ids = (api.nodes || []).map{|node| node.cluster_id}.uniq %>
+        <td>
+          <% cluster_ids.each do |x| %>
+            <%=raw link_to(x, cluster_path(x), class: 'btn btn-info btn-xs') %>
+          <% end %>
+        </td>
         <td>
           <%= link_to '编辑', edit_api_path(api.id), class: 'btn btn-warning btn-xs' %>
-          <%= link_to '删除', api_path(api.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+          <%= link_to '删除', api_path(api.id), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "你确认删除吗？"} %>
         </td>
       </tr>
     <% end %>

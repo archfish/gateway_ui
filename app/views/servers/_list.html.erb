@@ -53,10 +53,10 @@
         <td>
           <% if !without_actions %>
             <%= link_to '编辑', edit_server_path(server.id), class: 'btn btn-warning btn-xs' %>
-            <%= link_to '删除', server_path(server.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+            <%= link_to '删除', server_path(server.id), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "你确认删除吗？"} %>
           <% end %>
           <% if local_assigns.key?(:cluster) %>
-            <%= link_to '解绑', unbind_server_path(id: server.id, cluster_id: cluster.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+            <%= link_to '解绑', unbind_server_path(id: server.id, cluster_id: cluster.id), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "你确认解绑吗？"} %>
           <% end %>
         </td>
       </tr>

@@ -1,6 +1,6 @@
 class ClustersController < ApplicationController
   before_action :set_cluster, only: [
-    :show, :edit, :update, :servers, :unbind, :bind_server
+    :show, :edit, :update, :servers, :unbind, :bind_server, :destroy
   ]
 
   def index
@@ -36,7 +36,15 @@ class ClustersController < ApplicationController
   def show; end
 
   def destroy
-    redirect_to clusters_url if Cluster.destroy(params.slice(:id))
+    begin
+      @cluster.destroy!
+      flash.notice = "Cluster #{@cluster.id}-#{@cluster.name} destroyed!"
+    rescue => exp
+      log(exp, 'clusters#destroy')
+      flash.alert = exp.message
+    end
+
+    redirect_to clusters_url
   end
 
   def servers

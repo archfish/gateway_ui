@@ -75,6 +75,12 @@ class Routing
     result.ok?
   end
 
+  def destroy!
+    result = HttpRequest.delete("/routings/#{id}")
+    !result.ok? && raise(result.error)
+    result.ok?
+  end
+
   class << self
     def all(options)
       result = HttpRequest.get('/routings', options)
@@ -103,12 +109,40 @@ class Routing
       routing
     end
 
-    # options
-    #   id required
-    def destroy(options = {})
-      # TODO add checker
-      result = HttpRequest.delete("/routings/#{options[:id]}")
-      result.ok?
+    def include_cluster_id?(cluster_id)
+      last_id = 0
+      loop do
+        routings = self.all(after: last_id, limit: 10)
+
+        break if routings.blank?
+
+        last_id = routings.max{|x| x.id}
+        has_use = routings.any? do |routing|
+          routing.cluster_id.to_i == cluster_id.to_i
+        end
+
+        return true if has_use
+      end
+
+      false
+    end
+
+    def include_api_id?(api_id)
+      last_id = 0
+      loop do
+        routings = self.all(after: last_id, limit: 10)
+
+        break if routings.blank?
+
+        last_id = routings.max{|x| x.id}
+        has_use = routings.any? do |routing|
+          routing.api.to_i == api_id.to_i
+        end
+
+        return true if has_use
+      end
+
+      false
     end
   end
 end

@@ -2,4 +2,4 @@
 
 <%= render partial: 'servers/list', locals: {servers: @servers, without_actions: true, cluster: @cluster} %>
 
-<%= link_to '解绑以上服务', unbind_cluster_path(@cluster.id), method: :delete, class: 'btn btn-danger btn-lg' %>
+<%= link_to '解绑以上服务', unbind_cluster_path(@cluster.id), method: :delete, class: 'btn btn-danger btn-lg', data: {confirm: "操作不可逆你确认吗？"} %>

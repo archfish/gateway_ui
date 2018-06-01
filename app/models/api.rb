@@ -69,6 +69,13 @@ class Api
     result.ok?
   end
 
+  def destroy!
+    raise '已关联Routing，请先删除相关路由！' if Routing.include_api_id?(id)
+
+    result = HttpRequest.delete("/apis/#{id}")
+    result.ok?
+  end
+
   class << self
     def all(options = {})
       result = HttpRequest.get('/apis', options)
@@ -97,12 +104,20 @@ class Api
       api
     end
 
-    # options
-    #   id required
-    def destroy(options = {})
-      # TODO add checker
-      result = HttpRequest.delete("/apis/#{options[:id]}")
-      result.ok?
+    def include_cluster_id?(cluster_id)
+      last_id = 0
+      loop do
+        apis = self.all(after: last_id, limit: 10)
+        break if apis.blank?
+        last_id = apis.max{|x| x.id}
+        has_use = apis.any? do |api|
+          (api.nodes || []).any?{|node| node.cluster_id.to_i == cluster_id.to_i}
+        end
+
+        return true if has_use
+      end
+
+      false
     end
   end
 end

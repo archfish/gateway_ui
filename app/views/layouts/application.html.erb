@@ -25,6 +25,15 @@
       </div>
     </nav>
 
+    <% flash.each do |type, message| %>
+      <% next if message.blank? %>
+      <div class="alert <%= bootstrap_class_for(type) %> fade in m-b-10 m-t-10">
+        <span class="fa <%= (%w(success notice).include? type) ? 'fa-check-circle' : 'fa-exclamation-circle' %>"></span>
+        <%=raw message %>
+        <span class="close" data-dismiss="alert">&times;</span>
+      </div>
+    <% end %>
+
     <div class='container-fluid'>
       <%= yield %>
     </div>

@@ -38,12 +38,30 @@ class Cluster
     HttpRequest.put('/clusters', self.as_json).ok?
   end
 
-  # 获取一个cluster绑定的server列表
-  def servers
+  def destroy!
+    raise '已绑定服务，请先解绑！' if servers.present?
+    raise '已关联API，请先解绑！' if Api.include_cluster_id?(id)
+    raise '已关联Routing，请先删除相关路由！' if Routing.include_cluster_id?(id)
+
+    result = HttpRequest.delete("/clusters/#{self.id}")
+    result.ok?
+  end
+
+  def destroy
+    destroy!
+  rescue
+    false
+  end
+
+  def server_ids
     result = HttpRequest.get("/clusters/#{self.id}/binds")
     return [] unless result.ok?
+    result.data || []
+  end
 
-    (result.data || []).map do |server_id|
+  # 获取一个cluster绑定的server列表
+  def servers
+    server_ids.map do |server_id|
       next if server_id.to_i.zero?
       Server.find_by(id: server_id)
     end.compact
@@ -90,14 +108,6 @@ class Cluster
       cluster.id = result.data.to_i
 
       cluster
-    end
-
-    # options
-    #   id required
-    def destroy(options = {})
-      # TODO add checker
-      result = HttpRequest.delete("/clusters/#{options[:id]}")
-      result.ok?
     end
   end
 end

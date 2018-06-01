@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
   def per_page
     @per_page = (params[:per_page] || 10).to_i
   end
+
+  def log(exp, append = "")
+    Rails.logger.warn("#{append} #{"#{exp}\n #{exp.backtrace.take(15).join("\n")}"}")
+  end
 end

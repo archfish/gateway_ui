@@ -1,5 +1,5 @@
 class ServersController < ApplicationController
-  before_action :set_server, only: [:show, :edit, :update, :unbind]
+  before_action :set_server, only: [:show, :edit, :update, :unbind, :destroy]
 
   def index
     @servers = Server.all(after: after_index, limit: per_page)
@@ -33,7 +33,15 @@ class ServersController < ApplicationController
   end
 
   def destroy
-    redirect_to servers_url if Server.destroy(params.slice(:id))
+    begin
+      @server.destroy!
+      flash.notice = "Server #{@server.id} destroyed!"
+    rescue => exp
+      log(exp, 'servers#destroy')
+      flash.alert = exp.message
+    end
+
+    redirect_to servers_url
   end
 
   def unbind

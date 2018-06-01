@@ -17,11 +17,11 @@
   </div>
   <div class="form-group col-md-5">
     <%= label_tag :cluster_id %>
-    <%= select_tag :cluster_id, options_from_collection_for_select(@clusters, "id", "name"), class: 'form-control' %>
+    <%= select_tag :cluster_id, options_from_collection_for_select(@clusters, "id", "name", @routing.cluster_id), class: 'form-control' %>
   </div>
   <div class="form-group col-md-5">
     <%= label_tag :api %>
-    <%= select_tag :api, options_from_collection_for_select(@apis, "id", "name"), class: 'form-control' %>
+    <%= select_tag :api, options_from_collection_for_select(@apis, "id", "name", @routing.api), class: 'form-control' %>
   </div>
   <div class="form-group col-md-11">
     <%= submit_tag '提交', class: 'btn btn-default' %>

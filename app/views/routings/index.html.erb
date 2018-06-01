@@ -21,7 +21,7 @@
         <td><%= link_to routing.api, api_path(routing.api) %></td>
         <td>
           <%= link_to '编辑', edit_routing_path(routing.id), class: 'btn btn-warning btn-xs' %>
-          <%= link_to '删除', routing_path(routing.id), method: :delete, class: 'btn btn-danger btn-xs' %>
+          <%= link_to '删除', routing_path(routing.id), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "你确认删除吗？"} %>
         </td>
       </tr>
     <% end %>
