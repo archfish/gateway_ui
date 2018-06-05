@@ -85,7 +85,7 @@ class ApisController < ApplicationController
           "type": "string",
           "title": "Name",
           "propertyOrder": 20,
-          "minLength": 5
+          "minLength": 1
         },
         "url_pattern": {
           "type": "string",
@@ -106,6 +106,22 @@ class ApisController < ApplicationController
           "propertyOrder": 30
         },
         "status": #{JsonSchema.status},
+        "position": {
+          "type": "integer",
+          "title": "Position",
+          "minimum": 0,
+          "propertyOrder": 60
+        },
+        "match_rule": {
+          "type": "integer",
+          "title": "MatchRule",
+          "enum": #{JsonSchema::MatchRule.values},
+          "options": {
+            "enum_titles": #{JsonSchema::MatchRule.keys.map(&:to_s)}
+          },
+          "minimum": 0,
+          "propertyOrder": 60
+        },
         "ip_access_control": {
           "type": "object",
           "title": "IpAccessControl",
@@ -326,7 +342,7 @@ class ApisController < ApplicationController
         }
       },
       "required": [
-        "method", "status", "use_default"
+        "method", "status", "use_default", "position", "match_rule"
       ]
     }
     API

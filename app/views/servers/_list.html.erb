@@ -9,25 +9,25 @@
 <table class="table table-bordered table-condensed	">
   <thead>
     <tr>
-      <th rowspan="2">id</th>
-      <th rowspan="2">真实服务</th>
-      <th rowspan="2">通讯协议</th>
-      <th rowspan="2">最大QPS</th>
-      <th colspan="4" class="text-center">健康检查</th>
-      <th colspan="5" class="text-center">熔断</th>
+      <th rowspan="2">ID</th>
+      <th rowspan="2">Addr</th>
+      <th rowspan="2">Protocol</th>
+      <th rowspan="2">MaxQPS</th>
+      <th colspan="4" class="text-center">HeathCheck</th>
+      <th colspan="5" class="text-center">CircuitBreaker</th>
       <th rowspan="2" class="text-center">操作</th>
     </tr>
     <tr>
-      <th>请求路径</th>
-      <th>响应内容</th>
-      <th>检查间隔(s)</th>
-      <th>超时(s)</th>
+      <th>Path</th>
+      <th>Body</th>
+      <th>CheckInterval(s)</th>
+      <th>Timeout(s)</th>
       <% '以下为熔断配置' %>
-      <th>关闭延时(s)</th>
-      <th>半开比例(%)</th>
-      <th>统计周期(s)</th>
-      <th>失效比例(%)则半开变关闭</th>
-      <th>成功比例(%)则半开变开启</th>
+      <th>CloseTimeout(s)</th>
+      <th>HalfTrafficRate(%)</th>
+      <th>RateCheckPeriod(s)</th>
+      <th>FailureRateToClose(%)</th>
+      <th>SucceedRateToOpen(%)</th>
     </tr>
   </thead>
   <tbody>

@@ -60,5 +60,16 @@ module Concerns
       In: 5,
       Match: 6
     }
+
+    MatchRule = {
+      MatchDefault: 0,
+      MatchAll: 1,
+      MatchAny: 2
+    }
+
+    def key_of_match_rule(v)
+      MatchRule.key(v.to_i)
+    end
+
   end
 end

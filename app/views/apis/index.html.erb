@@ -1,14 +1,17 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>id</th>
-      <th>名字</th>
-      <th>URL模式</th>
-      <th>请求方法</th>
-      <th>请求域名</th>
-      <th>状态</th>
-      <th>强制使用默认值</th>
-      <th>关联Cluster</th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>URL Pattern</th>
+      <th>Method</th>
+      <th>Domain</th>
+      <th>Status</th>
+      <th>UseDefault</th>
+      <th>DefaultValue</th>
+      <th>ClusterID</th>
+      <th>MatchRule</th>
+      <th>Position</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -22,12 +25,15 @@
         <td><%= api.domain %></td>
         <td><%= api.status_name %></td>
         <td><%= api.use_default %></td>
+        <td><%= api.default_value.try(:body).try(:force_encoding, "UTF-8") %></td>
         <% cluster_ids = (api.nodes || []).map{|node| node.cluster_id}.uniq %>
         <td>
           <% cluster_ids.each do |x| %>
             <%=raw link_to(x, cluster_path(x), class: 'btn btn-info btn-xs') %>
           <% end %>
         </td>
+        <td><%= api.match_rule_name %></td>
+        <td><%= api.position %></td>
         <td>
           <%= link_to '编辑', edit_api_path(api.id), class: 'btn btn-warning btn-xs' %>
           <%= link_to '删除', api_path(api.id), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "你确认删除吗？"} %>

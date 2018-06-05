@@ -13,7 +13,7 @@ module JsonSchema
           "type": "string",
           "title": "Name",
           "propertyOrder": 1,
-          "minLength": 5
+          "minLength": 1
         },
         "source": {
           "type": "integer",

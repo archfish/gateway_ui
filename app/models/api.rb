@@ -4,7 +4,8 @@ class Api
   def self.attributes
     [
       :id, :name, :url_pattern, :method, :domain, :status, :ip_access_control,
-      :default_value, :nodes, :auth_filter, :perms, :render_template, :use_default
+      :default_value, :nodes, :auth_filter, :perms, :render_template, :use_default,
+      :position, :match_rule
     ]
   end
 
@@ -21,7 +22,7 @@ class Api
     end
   end
 
-  [:id, :status].each do |x|
+  [:id, :status, :position, :match_rule].each do |x|
     define_method "#{x}=".to_sym do |v|
       instance_variable_set("@#{x}", v.try(:to_i))
     end
@@ -29,6 +30,10 @@ class Api
 
   def status_name
     key_of_status(self.status)
+  end
+
+  def match_rule_name
+    key_of_match_rule(self.match_rule)
   end
 
   def default_value=(v)

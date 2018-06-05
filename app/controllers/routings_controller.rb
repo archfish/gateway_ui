@@ -70,7 +70,7 @@ class RoutingsController < ApplicationController
         "name": {
           "type": "string",
           "title": "Name",
-          "minLength": 5,
+          "minLength": 1,
           "options": {
             "grid_columns": 4
           },

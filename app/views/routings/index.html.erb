@@ -1,13 +1,14 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>id</th>
-      <th>名字</th>
-      <th>路由策略</th>
-      <th>路由比例(%)</th>
-      <th>状态</th>
-      <th>API编号</th>
-      <th>动作</th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Strategy</th>
+      <th>TrafficRate(%)</th>
+      <th>Status</th>
+      <th>API</th>
+      <th>ClusterID</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
@@ -18,7 +19,8 @@
         <td><%=t routing.strategy_name, scope: 'enum.strategy' %></td>
         <td><%= routing.traffic_rate %></td>
         <td><%= routing.status_name %></td>
-        <td><%= link_to routing.api, api_path(routing.api) %></td>
+        <td><%= link_to routing.api, api_path(routing.api), class: 'btn btn-info btn-xs' %></td>
+        <td><%= link_to routing.cluster_id, cluster_path(routing.cluster_id), class: 'btn btn-info btn-xs' %></td>
         <td>
           <%= link_to '编辑', edit_routing_path(routing.id), class: 'btn btn-warning btn-xs' %>
           <%= link_to '删除', routing_path(routing.id), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "你确认删除吗？"} %>
