@@ -3,7 +3,7 @@ class Routing
 
   def self.attributes
     [
-      :id, :name, :cluster_id, :strategy, :traffic_rate, :status, :api
+      :id, :name, :cluster_id, :strategy, :traffic_rate, :status, :api, :conditions
     ]
   end
 

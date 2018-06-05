@@ -52,125 +52,40 @@ class ApisController < ApplicationController
   end
 
   def server_params
-    params.delete(:api)
+    api = params[:api]
     [:ip_access_control, :default_value, :render_template].each do |x|
-      if params[x].blank? || params[x].as_json.all?{|_, v| v.blank?}
-        params[x] = nil
+      if api[x].blank? || api[x].as_json.all?{|_, v| v.blank?}
+        api[x] = nil
       end
     end
-    if params[:nodes].present?
-      params[:nodes].each do |x|
+    if api[:nodes].present?
+      api[:nodes].each do |x|
         x[:cache] = nil if (x[:cache] || {})[:keys].blank?
         if x[:default_value].blank? || x[:default_value].as_json.all?{|_, v| v.blank?}
           x[:default_value] = nil
         end
       end
     end
-    puts params.to_json
-    params
+
+    params.require(:api)
   end
 
   def set_schema
-    clusters = Cluster.all()
     @api_schema = <<-API
     {
       "type": "object",
       "format": "grid",
       "definitions": {
-        "parameter": {
-          "type": "object",
-          "title": "Parameter",
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "Name",
-              "propertyOrder": 1
-            },
-            "source": {
-              "type": "integer",
-              "title": "Source",
-              "enum": [
-                0, 1, 2, 3, 4, 5
-              ],
-              "options": {
-                "enum_titles": [
-                  "QueryString", "FormData", "JSONBody", "Header", "Cookie", "PathValue"
-                ]
-              },
-              "propertyOrder": 2
-            },
-            "index": {
-              "type": "integer",
-              "title": "Index",
-              "propertyOrder": 3
-            }
-          },
-          "options": {
-            "layout": "grid"
-          }
-        },
-        "pair_value": {
-          "type": "object",
-          "title": "PairValue",
-          "properties": {
-            "name": {
-              "type": "string",
-              "title": "Name",
-              "propertyOrder": 1
-            },
-            "value": {
-              "type": "string",
-              "title": "Value",
-              "propertyOrder": 2
-            }
-          }
-        },
-        "default_value": {
-          "type": "object",
-          "title": "DefaultValue",
-          "properties": {
-            "body": {
-              "type": "string",
-              "title": "Body",
-              "format": "textarea",
-              "description": "内容可以为Base64编码，也可以为原始数据",
-              "options": {
-                "grid_columns": 12
-              },
-              "propertyOrder": 1
-            },
-            "headers": {
-              "type": "array",
-              "format": "table",
-              "title": "Headers",
-              "options": {
-                "grid_columns": 6
-              },
-              "items": {
-                "$ref": "#/definitions/pair_value"
-              },
-              "propertyOrder": 2
-            },
-            "cookies": {
-              "type": "array",
-              "format": "table",
-              "title": "Cookies",
-              "options": {
-                "grid_columns": 6
-              },
-              "items": {
-                "$ref": "#/definitions/pair_value"
-              },
-              "propertyOrder": 3
-            }
-          }
-        }
+        "parameter": #{JsonSchema.parameter},
+        "pair_value": #{JsonSchema.pair_value},
+        "default_value": #{JsonSchema.default_value}
       },
       "properties": {
         "name": {
           "type": "string",
           "title": "Name",
-          "propertyOrder": 20
+          "propertyOrder": 20,
+          "minLength": 5
         },
         "url_pattern": {
           "type": "string",
@@ -190,23 +105,11 @@ class ApisController < ApplicationController
           "title": "Domain",
           "propertyOrder": 30
         },
-        "status": {
-          "type": "integer",
-          "title": "Status",
-          "enum": [
-            0, 1, 2
-          ],
-          "options": {
-            "enum_titles": [
-              "Down", "Up", "Unknown"
-            ]
-          },
-          "propertyOrder": 60
-        },
+        "status": #{JsonSchema.status},
         "ip_access_control": {
           "type": "object",
           "title": "IpAccessControl",
-          "description": "只支持通配符`*`",
+          "description": "通配符只支持`*`",
           "properties": {
             "whitelist": {
               "title": "白名单",
@@ -252,17 +155,10 @@ class ApisController < ApplicationController
             "type": "object",
             "title": "节点",
             "properties": {
-              "cluster_id": {
-                "type": "integer",
-                "title": "ClusterID",
-                "enum": #{clusters.map(&:id)},
-                "options": {
-                  "enum_titles": #{clusters.map(&:name)}
-                }
-              },
+              "cluster_id": #{JsonSchema.cluster_id},
               "url_rewrite": {
                 "type": "string",
-                "title": "UrlRewrite",
+                "title": "urlRewrite",
               },
               "attr_name": {
                 "type": "string",
@@ -334,29 +230,11 @@ class ApisController < ApplicationController
                     },
                     "propertyOrder": 30
                   },
-                  "conditions": {
-                    "type": "array",
-                    "format": "table",
-                    "title": "Conditions",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "parameter": {
-                          "$ref": "#/definitions/parameter"
-                        },
-                        "cmp": {
-                          "type": "integer",
-                          "title": "Cmp"
-                        },
-                        "expect": {
-                          "type": "string",
-                          "title": "Expect"
-                        }
-                      }
-                    },
-                    "propertyOrder": 20
-                  }
-                }
+                  "conditions": #{JsonSchema.conditions}
+                },
+                "required": [
+                  "keys", "deadline"
+                ]
               },
               "default_value": {
                 "title": "DefaultValue",
@@ -370,7 +248,10 @@ class ApisController < ApplicationController
                 "type": "integer",
                 "title": "BatchIndex"
               }
-            }
+            },
+            "required": [
+              "cluster_id", "use_default"
+            ]
           },
           "propertyOrder": 300
         },
@@ -445,7 +326,7 @@ class ApisController < ApplicationController
         }
       },
       "required": [
-        "method", "status"
+        "method", "status", "use_default"
       ]
     }
     API

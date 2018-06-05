@@ -1,6 +1,7 @@
 class RoutingsController < ApplicationController
   before_action :set_routing, only: [:show, :edit, :update, :destroy]
   before_action :get_related_list, only: [:new, :edit]
+  before_action :set_schema, only: [:new, :edit]
 
   def index
     @routings = Routing.all(after: after_index, limit: per_page)
@@ -14,22 +15,22 @@ class RoutingsController < ApplicationController
   def show; end
 
   def update
-    res = @routing.update(params)
+    ok = @routing.update(routing_params)
 
-    if res
-      redirect_to routings_url, notice: '更新成功'
+    if ok
+      render json: {url: routings_url}, status: 301
     else
-      render :edit
+      render json: {msg: '更新失败'}
     end
   end
 
   def create
-    @routing = Routing.create(params)
+    @routing = Routing.create(routing_params)
 
     if @routing.id
-      redirect_to routings_url
+      render json: {url: routings_url}, status: 301
     else
-      render :new
+      render json: {msg: '创建失败'}
     end
   end
 
@@ -55,4 +56,56 @@ class RoutingsController < ApplicationController
     @apis = Api.all
     @clusters = Cluster.all
   end
+
+  def routing_params
+    params.require(:routing)
+  end
+
+  def set_schema
+    @routing_schema = <<-ROUTING
+    {
+      "type": "object",
+      "format": "grid",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "minLength": 5,
+          "options": {
+            "grid_columns": 4
+          },
+          "propertyOrder": 10
+        },
+        "strategy": {
+          "type": "integer",
+          "title": "Strategy",
+          "enum": #{Routing::Strategy.values},
+          "options": {
+            "grid_columns": 4,
+            "enum_titles": #{Routing::Strategy.keys.map(&:to_s)}
+          },
+          "propertyOrder": 20
+        },
+        "traffic_rate": {
+          "type": "integer",
+          "title": "trafficRate",
+          "options": {
+            "grid_columns": 4
+          },
+          "minimum": 0,
+          "maximum": 100,
+          "propertyOrder": 30
+        },
+        "status": #{JsonSchema.status(40)},
+        "cluster_id": #{JsonSchema.cluster_id(50)},
+        "api": #{JsonSchema.api(60)},
+        "conditions": #{JsonSchema.conditions(100)}
+      },
+      "required": [
+        "cluster_id", "strategy", "api", "status", "name", "traffic_rate"
+      ]
+    }
+    ROUTING
+  end
+
 end

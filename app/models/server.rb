@@ -64,7 +64,7 @@ class Server
     cluster = Cluster.all.find {|c| c.server_ids.include?(id)}
     raise "服务(#{id})已在Cluster-#{cluster.name}(#{cluster.id})中使用，请先解绑！" if cluster.present?
 
-    result = HttpRequest.delete("/servers/#{options[:id]}")
+    result = HttpRequest.delete("/servers/#{id}")
     result.ok?
   end
 

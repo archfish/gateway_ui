@@ -42,7 +42,7 @@ module HttpRequest
     result = begin
       yield if block_given?
     rescue => e
-      Rails.logger.debug("#{e} #{e.backtrace.join("\n")}")
+      Rails.logger.debug("#{e} #{e.backtrace.take(15).join("\n")}")
       return Result.new(error: e.message)
     end
 

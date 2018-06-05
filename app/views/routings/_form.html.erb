@@ -1,29 +1,32 @@
-<%= form_tag(target, method: method, role: "form") do |f| %>
-  <div class="form-group col-md-5">
-    <%= label_tag :name %>
-    <%= text_field_tag :name, @routing.name, class: 'form-control' %>
-  </div>
-  <div class="form-group col-md-5">
-    <%= label_tag :strategy %>
-    <%= select_tag :strategy, options_for_select(Routing::Strategy, @routing.strategy), class: 'form-control' %>
-  </div>
-  <div class="form-group col-md-5">
-    <%= label_tag :traffic_rate %>
-    <%= number_field_tag :traffic_rate, @routing.traffic_rate, class: 'form-control' %>
-  </div>
-  <div class="form-group col-md-5">
-    <%= label_tag :status %>
-    <%= select_tag :status, options_for_select(Routing::Status, @routing.status), class: 'form-control' %>
-  </div>
-  <div class="form-group col-md-5">
-    <%= label_tag :cluster_id %>
-    <%= select_tag :cluster_id, options_from_collection_for_select(@clusters, "id", "name", @routing.cluster_id), class: 'form-control' %>
-  </div>
-  <div class="form-group col-md-5">
-    <%= label_tag :api %>
-    <%= select_tag :api, options_from_collection_for_select(@apis, "id", "name", @routing.api), class: 'form-control' %>
-  </div>
-  <div class="form-group col-md-11">
-    <%= submit_tag '提交', class: 'btn btn-default' %>
-  </div>
-<% end %>
+<div class='row'>
+  <div id='editor_holder' class='medium-12 columns'></div>
+</div>
+
+<div class='row large-12' id='form_operations'>
+  <%= button_tag '提交', class: "btn btn-primary btn-lg", id: 'submit' %>
+  <span id="error_holder"></span>
+</div>
+
+<script>
+  let api_value = <%=raw @routing.to_json %>;
+  let method = '<%= method %>';
+  let url = '<%= target %>';
+
+  let editor = new JSONEditor(document.getElementById('editor_holder'), {
+    schema: <%=raw @routing_schema || {} %>,
+    no_additional_properties: true
+  });
+  let submit_button = document.getElementById('submit');
+
+  if (api_value) {
+    editor.setValue(api_value);
+  }
+
+  bindChangeEvent(editor, 'error_holder', submit_button);
+
+  submit_button.addEventListener('click', function () {
+    let data = {};
+    data.routing = editor.getValue();
+    submitData(method, url, data)
+  });
+</script>

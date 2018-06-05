@@ -49,5 +49,16 @@ module Concerns
     def key_of_rs(v)
       Strategy.key(v.to_i)
     end
+
+    # CMP
+    CompareType = {
+      EQ: 0,
+      LT: 1,
+      LE: 2,
+      GT: 3,
+      GE: 4,
+      In: 5,
+      Match: 6
+    }
   end
 end
