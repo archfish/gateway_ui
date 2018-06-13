@@ -1,6 +1,6 @@
 class DefaultValue
   def self.attributes
-    [:body, :headers, :cookies]
+    [:body, :headers, :cookies, :code]
   end
 
   def self.attribute_names
@@ -13,6 +13,10 @@ class DefaultValue
     args ||= {}
     self.class.attributes.each do |x|
       self.public_send("#{x}=", args[x])
+    end
+
+    if @code.to_i.zero?
+      @code = 200
     end
   end
 

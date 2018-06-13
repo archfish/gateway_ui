@@ -84,9 +84,20 @@ module JsonSchema
           "format": "textarea",
           "description": "内容可以为Base64编码，也可以为原始数据",
           "options": {
-            "grid_columns": 12
+            "grid_columns": 6
           },
           "propertyOrder": 1
+        },
+        "code": {
+          "type": "integer",
+          "title": "Http Status Code",
+          "description": "HTTP标准状态码，必填",
+          "enum": #{Rack::Utils::HTTP_STATUS_CODES.keys},
+          "options": {
+            "grid_columns": 6,
+            "enum_titles": #{Rack::Utils::HTTP_STATUS_CODES.map{|k, v| "#{v}-#{k}"}}
+          },
+          "propertyOrder": 2
         },
         "headers": {
           "type": "array",
@@ -96,7 +107,7 @@ module JsonSchema
             "grid_columns": 6
           },
           "items": #{pair_value},
-          "propertyOrder": 2
+          "propertyOrder": 20
         },
         "cookies": {
           "type": "array",
@@ -108,7 +119,7 @@ module JsonSchema
           "items": {
             "$ref": #{pair_value}
           },
-          "propertyOrder": 3
+          "propertyOrder": 30
         }
       },
       "propertyOrder": #{order}
