@@ -163,6 +163,37 @@ class ApisController < ApplicationController
           "title": "DefaultValue",
           "propertyOrder": 200
         },
+        "tags": {
+          "type": "array",
+          "title": "Tags",
+          "format": "tabs",
+          "items": {
+            "$ref": "#/definitions/pair_value",
+            "title": "Tag",
+          },
+          "propertyOrder": 1700,
+          "options": {
+            "grid_columns": 6
+          },
+          "description": "该值用于页面组织数据，并无实际用途，可选"
+        },
+        "web_socket_options": {
+          "type": "object",
+          "title": "WebSocketOptions",
+          "properties": {
+            "origin": {
+              "type": "string",
+              "title": "Origin",
+              "propertyOrder": 1,
+              "minLength": 4
+            }
+          },
+          "propertyOrder": 1800,
+          "options": {
+            "grid_columns": 6
+          },
+          "description": "格式：「协议://域名」"
+        },
         "nodes": {
           "type": "array",
           "title": "Nodes",
@@ -342,7 +373,8 @@ class ApisController < ApplicationController
         }
       },
       "required": [
-        "method", "status", "use_default", "position", "match_rule"
+        "method", "status", "use_default", "position", "match_rule", "tags",
+        "web_socket_options"
       ]
     }
     API

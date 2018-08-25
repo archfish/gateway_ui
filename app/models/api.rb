@@ -5,7 +5,7 @@ class Api
     [
       :id, :name, :url_pattern, :method, :domain, :status, :ip_access_control,
       :default_value, :nodes, :auth_filter, :perms, :render_template, :use_default,
-      :position, :match_rule
+      :position, :match_rule, :tags, :web_socket_options
     ]
   end
 
@@ -63,6 +63,16 @@ class Api
 
   def use_default=(v)
     @use_default = v.is_a?(String) ? v.casecmp('true').zero? : v
+  end
+
+  def tags=(v)
+    return @tags = nil if v.nil?
+    @tags = v.map{ |x| x.is_a?(PairValue) ? x : PairValue.new(x) }
+  end
+
+  def web_socket_options=(v)
+    return @web_socket_options = nil if v.nil?
+    @web_socket_options = WebSocketOptions.new(v)
   end
 
   def update(options = {})
@@ -123,6 +133,27 @@ class Api
       end
 
       false
+    end
+  end
+
+  class WebSocketOptions
+    def self.attributes
+      [
+        :origin
+      ]
+    end
+
+    def self.attribute_names
+      attributes.map(&:to_s)
+    end
+
+    attr_accessor *attributes
+
+    def initialize(args = {})
+      args ||= {}
+      self.class.attributes.each do |x|
+        self.public_send("#{x}=", args[x])
+      end
     end
   end
 end
