@@ -23,7 +23,7 @@ WORKDIR ${APP_ROOT}
 COPY ./ ./
 
 RUN gem source --remove https://rubygems.org/ \
-    && gem source --add https://gems.ruby-china.org \
+    && gem source --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ \
     && bundle config --global frozen 1 \
     && bundle install -j4 --retry 3 \
     && yarn install \
